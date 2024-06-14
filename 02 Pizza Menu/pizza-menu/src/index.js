@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDom from 'react-dom/client';
 import './index.css'
+import pizzaData from './data.js'
 
-function Pizza(){
-    return (
-        <div>
-            <img src='pizzas/spinaci.jpg' alt='pizza'/>
-            <h3>Spinaci Pizza</h3>
-            <p>Tomato, mozarella, spinach, and ricotta cheese</p>
-        </div>
-    );
+function Pizza({pizzaObject}){
+	return (
+		<div className={`pizza ${pizzaObject.soldOut ? "sold-out" : ""}`}>
+			<img src={pizzaObject.photoName} alt={pizzaObject.name}/>
+			<div>
+				<h3>{pizzaObject.name}</h3>
+				<p>{pizzaObject.ingredients}</p>
+				<span>{pizzaObject.soldOut ? "Sold Out" : pizzaObject.price}</span>
+			</div>
+		</div>
+	);
 }
 
 function Header(){
@@ -21,25 +25,49 @@ function Header(){
 }
 
 function Menu(){ 
-    return (
-        <main className='menu'>
-            <h2>Our Menu</h2>
-            <Pizza/>
-            <Pizza/>
-            <Pizza/>
-        </main>
-    )
+	return (
+		<main className='menu'>
+		<h2>Our Menu</h2>
+		
+		{pizzaData.length > 0 ? (
+			<React.Fragment>
+				<p>Authentic Italian cuisine. 6 creative dishes to choose from. All from our stone oven, all organic, all delicious.</p>
+				<ul className="pizzas">
+					{pizzaData.map(pizza => (
+						<Pizza pizzaObject={pizza} key={pizza.name}/>
+					))}
+				</ul>
+			</React.Fragment>
+			):(
+				<p>We're still working on our menu. Please come back later!</p>
+		)}
+		</main>
+	)
 }
 
 function Footer(){
-    const hour = new Date().getHours();
+	const hour = new Date().getHours();
 	const openHour = 12;
 	const closeHour = 22;
 	
 	const isOpen = hour >= openHour && hour <= closeHour;
 
-    return <footer className='footer'>{new Date().toLocaleTimeString()}. We're currently open</footer>;
+  return <footer className='footer'>
+	  {isOpen ? (
+		<Order closeHour={closeHour}/>
+	  ):(
+		<p>We're happy to welcome you between {openHour}:00 and {closeHour}:00.</p>
+	  )}
+	  </footer>;
 }
+
+function Order({closeHour}){
+	return (
+		<div className='order'>
+			<p>We're opened until {closeHour}:00. Come vist us or order online.</p>
+			<button className='btn'>Order</button>
+		</div>
+)}
 
 function App() {
     return (
