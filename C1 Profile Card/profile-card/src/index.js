@@ -1,8 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import profileData from './data.js';
+
+function Card({name, avatar, description, skills}){
+  return (
+    <div className='card'>
+      <img className='avatar' src={avatar} alt='peter'/>
+      <div className='data'>
+        <h1>{name}</h1>
+        <p>{description}</p>
+        <div className='skill-list'>
+          {skills.map(({skill, color, emoji}, i) => <span className='skill' style={{backgroundColor: color}}>{skill} {emoji}</span>)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function App(){
+  return (
+    profileData.map(profile => 
+      <Card 
+      name={profile.name}
+      avatar={profile.avatar}
+      description={profile.description}
+      skills={profile.skills}/>
+    )
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,8 +36,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
