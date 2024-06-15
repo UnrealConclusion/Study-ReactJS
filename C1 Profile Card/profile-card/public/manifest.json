@@ -1,6 +1,6 @@
 {
-  "short_name": "Pizza Co.",
-  "name": "Fast React Pizza Co.",
+  "short_name": "Profile Card",
+  "name": "Profile Card",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
