@@ -11,7 +11,7 @@ function Card({name, avatar, description, skills}){
         <h1>{name}</h1>
         <p>{description}</p>
         <div className='skill-list'>
-          {skills.map(({skill, color, emoji}, i) => <span className='skill' style={{backgroundColor: color}}>{skill} {emoji}</span>)}
+          {skills.map(({skill, color, emoji}, i) => <span key={i} className='skill' style={{backgroundColor: color}}>{skill} {emoji}</span>)}
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@ function Card({name, avatar, description, skills}){
 
 function App(){
   return (
-    profileData.map(profile => 
+    profileData.map((profile, i) => 
       <Card 
       name={profile.name}
       avatar={profile.avatar}
