@@ -1,0 +1,27 @@
+.container {
+  display: grid;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
+}
+
+.reset {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+select {
+  margin: 10px;
+}
+
+input {
+  margin: 10px;
+}
+
+p {
+  text-align: center;
+}
