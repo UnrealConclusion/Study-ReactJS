@@ -25,7 +25,7 @@ const tempMovieData = [
       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
 ];
-*/
+
 const tempWatchedData = [
   {
     imdbID: "tt1375666",
@@ -48,6 +48,7 @@ const tempWatchedData = [
     userRating: 9,
   },
 ];
+*/
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -61,13 +62,15 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectId, setSelectedId] = useState(null);
-  
+
   useEffect(function() {
+    const controller = new AbortController();
+
     async function fetchMovies(){
       try {
         setIsLoading(true);
         setError("");
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`);
+        const res = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`, {signal: controller.signal});
         
         if (!res.ok){
           throw new Error("Something went wrong with fetching movies");
@@ -83,7 +86,9 @@ export default function App() {
         setMovies(data.Search)
       } catch (err){
         console.log(err.message);
-        setError(err.message);
+        if (err.name !== "AbortError"){
+          setError(err.message);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -95,7 +100,12 @@ export default function App() {
       return;
     }
 
+    handleCloseMovie();
     fetchMovies();
+
+    return function () {
+      controller.abort();
+    };
   }, [query]);
 
   function handleSelectMovie(id) {
@@ -160,6 +170,25 @@ function MovieDetails({selectId, onCloseMovie, onAddWatch, watched}) {
     getMovieDetails();
   }, [selectId]);
 
+  useEffect(
+    function() {
+      // callback function for the listener
+      function callback(event) {
+        if (event.code === "Escape") {
+          onCloseMovie();
+        }
+      }
+      
+      // install event listener
+      document.addEventListener("keydown", callback);
+      
+      // uninstall event listener
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    }
+  , [onCloseMovie]);
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectId,
@@ -174,6 +203,16 @@ function MovieDetails({selectId, onCloseMovie, onAddWatch, watched}) {
     onCloseMovie();
   }
 
+  useEffect(function () {
+    if (!title) {
+      return;
+    }
+    document.title = `Movie | ${title}`;
+    return function () {
+      document.title = "usePopcorn";
+    }
+  }, [title]);
+
   return (
     <div className="details">
       {isLoading ? <Loader/> :
@@ -186,6 +225,8 @@ function MovieDetails({selectId, onCloseMovie, onAddWatch, watched}) {
               <p>
                 {released} &bull; {runtime}
               </p>
+              <p>{genre}</p>
+              <p>⭐️ {imdbRating} IMDb Rating</p>
             </div>
           </header>
           <section>
