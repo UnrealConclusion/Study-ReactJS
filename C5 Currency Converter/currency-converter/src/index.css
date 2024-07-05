@@ -1,0 +1,15 @@
+body {
+    background-color: #379392;
+}
+
+.banner {
+    background-color: #4F86C6;
+    text-align: center;
+}
+
+.box {
+    background-color: #4FB0C6;
+    border: 2px solid #4FB0C6;
+    height: 95vh;
+    width: 95wh;
+}
