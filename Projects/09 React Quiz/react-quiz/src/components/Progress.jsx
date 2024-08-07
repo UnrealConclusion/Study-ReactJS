@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
+import {useQuizContext} from '../contexts/QuizContext';
 
-export default function Progress({index, numQuestions, points, maxPoints, answer}) {
-
+export default function Progress() {
+    const {index, numQuestions, points, maxPoints, answer} = useQuizContext();
 
     return (
         <header className='progress'>
