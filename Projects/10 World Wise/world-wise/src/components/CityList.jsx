@@ -3,10 +3,12 @@ import Message from './Message'
 import PropTypes from 'prop-types';
 import Spinner from "./Spinner";
 import styles from "./CityList.module.css";
+import { useCitiesContext } from '../contexts/CitiesContext';
 
 
-export default function CityList({cities, isLoading}) {
-    
+export default function CityList() {
+    const { cities, isLoading } = useCitiesContext();
+
     if (isLoading) {
         return <Spinner/>;
     }
