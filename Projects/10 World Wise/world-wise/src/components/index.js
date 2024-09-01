@@ -12,6 +12,7 @@ import PageNav from "./PageNav";
 import ProtectedRoute from "./ProtectedRoute";
 import Sidebar from "./Sidebar";
 import Spinner from "./Spinner";
+import SpinnerFullPage from "./SpinnerFullPage";
 import User from "./User";
 
 export {
@@ -29,5 +30,6 @@ export {
     ProtectedRoute,
     Sidebar, 
     Spinner, 
+    SpinnerFullPage,
     User
 }
